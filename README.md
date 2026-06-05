@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What's in My Fridge?</title>
+    <style>
+        body {
+            font-family: Georgia, Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            text-align: center;
+        }
+        h1 { color: #2c3e50; }
+        .search-box {
+            margin: 40px 0;
+        }
+        input {
+            padding: 10px;
+            width: 70%;
+            border: 2px solid #bdc3c7;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover { background-color: #27ae60; }
+        #results {
+            margin-top: 30px;
+            text-align: left;
+        }
+        .recipe-card {
+            background: white;
+            padding: 30px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .recipe-card h3 { 
+            margin-top: 0; 
+            color: #2c3e50; 
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🍳 What's in My Fridge?</h1>
+    <p>Enter what is inside your fridge:</p>
+
+    <div class="search-box">
+        <input type="text" id="ingredientInput" placeholder="e.g., egg, tomato, spinach">
+        <button onclick="searchRecipes()">Find Food</button>
+    </div>
+
+    <div id="results"></div>
+
+    <script>
+        // MOCK DATABASE: Cleaned up, comma-separated, and lowercased for flawless matching
+        const mockDatabase = [
+            { title: "Classic Omelette", ingredients: ["egg", "cheese"], instructions: "Beat eggs, pour into pan, add cheese, fold." },
+            { title: "Tomato Egg Scramble", ingredients: ["egg", "tomato"], instructions: "Chop tomatoes. Scramble eggs in a pan, toss in tomatoes." },
+            { title: "Spinach Salad", ingredients: ["spinach", "tomato"], instructions: "Mix fresh spinach and chopped tomatoes with olive oil." },
+            { title: "The Ultimate Breakfast", ingredients: ["egg", "cheese", "spinach"], instructions: "Cook spinach, add eggs, top with an absolute mountain of cheese." }, 
+            {
+                title: "The Legendary Sambar",
+                ingredients: ["toor dal", "drumsticks", "ash gourd", "pumpkin", "carrots", "okra", "eggplant", "shallots", "tomato", "tamarind"],
+                instructions: `Cook Dal: Pressure cook 1/2 cup toor dal until soft. Mash it.
+                
+Roast Coconut: Fry 1 cup grated coconut with 2 tbsp coriander seeds and 5 red chilies in oil until golden brown. Blend into a smooth paste.
+
+Boil Veggies: Boil 2 cups vegetables with water, salt, and turmeric. Add 1/2 cup tamarind juice and boil for 4 minutes.
+
+Mix: Add the mashed dal and coconut paste to the veggies. Simmer for 5 minutes.
+
+Temper: Fry 1 tsp mustard seeds and curry leaves in 1 tbsp coconut oil. Pour over the sambar. Done!`
+            }, // <-- Fixed: Added missing comma here to bridge Sambar and Avial
+            { 
+                title: "Kerala Style Nadan Avial",
+                ingredients: ["carrot", "raw banana", "plantain", "drumstick", "ash gourd", "pumpkin", "cucumber"], // <-- Fixed: Divided ingredients cleanly
+                instructions: `Boil Veggies: Cook 2 cups of long-cut mixed vegetables with 1 tsp turmeric, salt, and water until tender.
+
+Blend Coconut: Coarsely grind 1 cup coconut, 1 tsp cumin, and 2-3 green chilies with very little water.
+
+Mix: Add the coconut paste to the cooked veggies. Simmer for 2 minutes.
+
+Finish: Turn off heat. Stir in 1/2 cup beaten yogurt. Top with 2 tbsp coconut oil and fresh curry leaves. Cover for 5 minutes, then serve!` // <-- Fixed: Swapped to backticks for multi-line support
+            }
+        ];
+        
+
+        function searchRecipes() {
+            const userInput = document.getElementById("ingredientInput").value.toLowerCase();
+            const resultsDiv = document.getElementById("results");
+            
+            resultsDiv.innerHTML = "";
+
+            if (!userInput) {
+                resultsDiv.innerHTML = "<p>Please type at least one ingredient!</p>";
+                return;
+            }
+
+            // Clean up white spaces from inputs
+            const userIngredients = userInput.split(',').map(item => item.trim());
+
+            // Match ingredients
+            const matchedRecipes = mockDatabase.filter(recipe => {
+                return userIngredients.some(ingredient => recipe.ingredients.includes(ingredient));
+            });
+
+            if (matchedRecipes.length === 0) {
+                resultsDiv.innerHTML = "<p>No recipes found with those ingredients. Try 'egg', 'cheese', or 'pumpkin'!</p>";
+                return;
+            }
+
+            // Render matching recipes onto page
+            matchedRecipes.forEach(recipe => {
+                const card = document.createElement("div");
+                card.className = "recipe-card";
+                card.innerHTML = `
+                    <h3>${recipe.title}</h3>
+                    <p><strong>Uses:</strong> ${recipe.ingredients.join(", ")}</p>
+                    <p><strong>How to make:</strong><br>${recipe.instructions.replace(/\n/g, '<br>')}</p>
+                `;
+                resultsDiv.appendChild(card);
+            });
+        }
+    </script>
+
+    <br>
+    <table border="5" align="center" bgcolor=black cellpadding="10">
+        <tr>
+            <td>
+                <p style="margin:0; color: white; font-weight: bold;">Developed By: ADWAITH.KG</p>
+            </td>
+        </tr>
+    </table>
+    <table align="center">
+        <tr>
+            <td>
+                <a href="https://www.instagram.com/adwaii.thh___" target="blank"><img src="img/instagram.png" width="30px" height="45px" alt="instagram logo"></a>
+                &nbsp
+                <a href="https://b.whatsapp.com/917592047424" target="blank"><img src="img/whatsapp.jpeg" width="49px" height="55px"alt="whatsapp logo"></a>
+              
+                
+                
+                
+                
+            </td>
+            
+            
+            
+            
+            
+        </tr>
+        
+        
+        
+        
+    </table>
+
+</body>
+</html>
+
+
+            
