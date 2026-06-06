@@ -1,175 +1,157 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>What's in My Fridge?</title>
-    <style>
-        body {
-            font-family: Georgia, Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f7f6;
-            color: #333;
-            max-width: 600px;
-            margin: 50px auto;
-            padding: 20px;
-            text-align: center;
-        }
-        h1 { color: #2c3e50; }
-        .search-box {
-            margin: 40px 0;
-        }
-        input {
-            padding: 10px;
-            width: 70%;
-            border: 2px solid #bdc3c7;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-        button {
-            padding: 10px 20px;
-            background-color: #2ecc71;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        button:hover { background-color: #27ae60; }
-        #results {
-            margin-top: 30px;
-            text-align: left;
-        }
-        .recipe-card {
-            background: white;
-            padding: 30px;
-            margin-bottom: 15px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        .recipe-card h3 { 
-            margin-top: 0; 
-            color: #2c3e50; 
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What's In My Fridge?</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+h1 {
+    text-align: center;
+}
+
+input {
+    width: 70%;
+    padding: 10px;
+}
+
+button {
+    padding: 10px 15px;
+    cursor: pointer;
+}
+
+.recipe {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.about {
+    margin-top: 30px;
+    padding-top: 15px;
+    border-top: 2px solid #ddd;
+}
+</style>
 </head>
+
 <body>
 
-    <h1>🍳 What's in My Fridge?</h1>
-    <p>Enter what is inside your fridge:</p>
+<div class="container">
+    <h1>🍳 What's In My Fridge?</h1>
 
-    <div class="search-box">
-        <input type="text" id="ingredientInput" placeholder="e.g., egg, tomato, spinach">
-        <button onclick="searchRecipes()">Find Food</button>
-    </div>
+    <p>Enter ingredients separated by commas:</p>
+
+    <input id="ingredientInput" placeholder="egg, cheese">
+    <button onclick="findRecipes()">Search</button>
 
     <div id="results"></div>
-    
-        // MOCK DATABASE: Cleaned up, comma-separated, and lowercased for flawless matching
-    <script>
 
-    const mockDatabase = [
-    {
-        title: "Classic Omelette",
-        ingredients: ["egg", "cheese"],
-        instructions: "Beat eggs, pour into pan, add cheese, fold."
-    },
-    {
-        title: "Tomato Egg Scramble",
-        ingredients: ["egg", "tomato"],
-        instructions: "Chop tomatoes. Scramble eggs in a pan, toss in tomatoes."
-    },
-    {
-        title: "Spinach Salad",
-        ingredients: ["spinach", "tomato"],
-        instructions: "Mix fresh spinach and chopped tomatoes with olive oil."
-    },
-    {
-        title: "The Ultimate Breakfast",
-        ingredients: ["egg", "cheese", "spinach"],
-        instructions: "Cook spinach, add eggs, top with an absolute mountain of cheese."
-    },
-    {
-        title: "The Legendary Sambar",
-        ingredients: [
-            "toor dal",
-            "drumsticks",
-            "ash gourd",
-            "pumpkin",
-            "carrots",
-            "okra",
-            "eggplant",
-            "shallots",
-            "tomato",
-            "tamarind"
-        ],
-        instructions: `Cook Dal: Pressure cook 1/2 cup toor dal until soft. Mash it.
+    <div class="about">
+        <h2>About</h2>
+        <p>Created by Adwaith.</p>
+    </div>
+</div>
 
-Roast Coconut: Fry 1 cup grated coconut with 2 tbsp coriander seeds and 5 red chilies in oil until golden brown. Blend into a smooth paste.
-
-Boil Veggies: Boil 2 cups vegetables with water, salt, and turmeric. Add 1/2 cup tamarind juice and boil for 4 minutes.
-
-Mix: Add the mashed dal and coconut paste to the veggies. Simmer for 5 minutes.
-
-Temper: Fry 1 tsp mustard seeds and curry leaves in 1 tbsp coconut oil. Pour over the sambar. Done!`
-    },
-    {
-        title: "Kerala Style Nadan Avial",
-        ingredients: [
-            "carrot",
-            "raw banana",
-            "plantain",
-            "drumstick",
-            "ash gourd",
-            "pumpkin",
-            "cucumber"
-        ],
-        instructions: `Boil Veggies: Cook 2 cups of long-cut mixed vegetables with 1 tsp turmeric, salt, and water until tender.
-
-Blend Coconut: Coarsely grind 1 cup coconut, 1 tsp cumin, and 2-3 green chilies with very little water.
-
-Mix: Add the coconut paste to the cooked veggies. Simmer for 2 minutes.
-
-Finish: Turn off heat. Stir in 1/2 cup beaten yogurt. Top with 2 tbsp coconut oil and fresh curry leaves. Cover for 5 minutes, then serve!`
-    },
-    {
-        title: "Soya Chunks Fry",
-        ingredients: [
-            "soya chunks",
-            "water",
-            "salt",
-            "oil",
-            "mustard seeds",
-            "cumin seeds",
-            "curry leaves",
-            "onion",
-            "ginger garlic paste",
-            "green chili",
-            "turmeric powder",
-            "red chili powder",
-            "garam masala",
-            "coriander powder",
-            "lemon juice",
-            "coriander leaves"
-        ],
-        instructions: `Boil and squeeze the soya chunks.
-
-Heat oil and add mustard seeds, cumin seeds, and curry leaves.
-
-Add onion and saute until golden.
-
-Add ginger garlic paste and green chili.
-
-Add turmeric, chili powder, coriander powder, and salt.
-
-Add soya chunks and fry for 5 minutes.
-
-Sprinkle garam masala and lemon juice.
-
-Garnish with coriander leaves and serve.`
-    }
+<script>
+const mockDatabase = [
+{
+title: "Classic Omelette",
+ingredients: ["egg","cheese"],
+instructions: "Beat eggs, pour into pan, add cheese, fold."
+},
+{
+title: "Tomato Egg Scramble",
+ingredients: ["egg","tomato"],
+instructions: "Chop tomatoes. Scramble eggs and mix."
+},
+{
+title: "Spinach Salad",
+ingredients: ["spinach","tomato"],
+instructions: "Mix spinach and tomato."
+},
+{
+title: "The Ultimate Breakfast",
+ingredients: ["egg","cheese","spinach"],
+instructions: "Cook spinach, add eggs, top with cheese."
+},
+{
+title: "The Legendary Sambar",
+ingredients: ["toor dal","drumsticks","ash gourd","pumpkin","carrots","okra","eggplant","shallots","tomato","tamarind"],
+instructions: "Cook dal, boil vegetables, add tamarind, mix and temper."
+},
+{
+title: "Kerala Style Nadan Avial",
+ingredients: ["carrot","raw banana","plantain","drumstick","ash gourd","pumpkin","cucumber"],
+instructions: "Cook vegetables, add coconut mixture, finish with yogurt and coconut oil."
+},
+{
+title: "Soya Chunks Fry",
+ingredients: ["soya chunks","onion","green chili","oil","salt"],
+instructions: "Boil soya chunks, fry with spices and onions until crispy."
+}
 ];
-    </script>
-        // MOCK DATABASE: Cleaned up, comma-separated, and lowercased for flawless matching
+
+function findRecipes() {
+
+const input = document
+.getElementById("ingredientInput")
+.value
+.toLowerCase()
+.trim();
+
+const resultsDiv = document.getElementById("results");
+
+if(input === "") {
+    resultsDiv.innerHTML = "<p>Please enter ingredients.</p>";
+    return;
+}
+
+const userIngredients = input
+.split(",")
+.map(item => item.trim());
+
+const matches = mockDatabase.filter(recipe =>
+    userIngredients.every(ingredient =>
+        recipe.ingredients.includes(ingredient)
+    )
+);
+
+if(matches.length === 0){
+    resultsDiv.innerHTML =
+    "<p>No recipes found.</p>";
+    return;
+}
+
+resultsDiv.innerHTML = matches.map(recipe => `
+<div class="recipe">
+<h3>${recipe.title}</h3>
+<p><strong>Ingredients:</strong>
+${recipe.ingredients.join(", ")}</p>
+<p><strong>Instructions:</strong>
+${recipe.instructions}</p>
+</div>
+`).join("");
+}
+</script>
+    
 <table border="5" align="center" bgcolor="#black" cellpadding="10">
     <tr>
         <td>
@@ -189,11 +171,5 @@ Garnish with coriander leaves and serve.`
         <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp" width="40px" height="40px" style="margin: 0 10px;">
     </a>
 </div>
-    
-    
-
 </body>
 </html>
-
-
-            
