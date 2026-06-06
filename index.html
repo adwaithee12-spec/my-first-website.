@@ -63,19 +63,47 @@
     </div>
 
     <div id="results"></div>
-
-    <script>
+    
         // MOCK DATABASE: Cleaned up, comma-separated, and lowercased for flawless matching
-        const mockDatabase = [
-            { title: "Classic Omelette", ingredients: ["egg", "cheese"], instructions: "Beat eggs, pour into pan, add cheese, fold." },
-            { title: "Tomato Egg Scramble", ingredients: ["egg", "tomato"], instructions: "Chop tomatoes. Scramble eggs in a pan, toss in tomatoes." },
-            { title: "Spinach Salad", ingredients: ["spinach", "tomato"], instructions: "Mix fresh spinach and chopped tomatoes with olive oil." },
-            { title: "The Ultimate Breakfast", ingredients: ["egg", "cheese", "spinach"], instructions: "Cook spinach, add eggs, top with an absolute mountain of cheese." }, 
-            {
-                title: "The Legendary Sambar",
-                ingredients: ["toor dal", "drumsticks", "ash gourd", "pumpkin", "carrots", "okra", "eggplant", "shallots", "tomato", "tamarind"],
-                instructions: `Cook Dal: Pressure cook 1/2 cup toor dal until soft. Mash it.
-                
+    <script>
+
+    const mockDatabase = [
+    {
+        title: "Classic Omelette",
+        ingredients: ["egg", "cheese"],
+        instructions: "Beat eggs, pour into pan, add cheese, fold."
+    },
+    {
+        title: "Tomato Egg Scramble",
+        ingredients: ["egg", "tomato"],
+        instructions: "Chop tomatoes. Scramble eggs in a pan, toss in tomatoes."
+    },
+    {
+        title: "Spinach Salad",
+        ingredients: ["spinach", "tomato"],
+        instructions: "Mix fresh spinach and chopped tomatoes with olive oil."
+    },
+    {
+        title: "The Ultimate Breakfast",
+        ingredients: ["egg", "cheese", "spinach"],
+        instructions: "Cook spinach, add eggs, top with an absolute mountain of cheese."
+    },
+    {
+        title: "The Legendary Sambar",
+        ingredients: [
+            "toor dal",
+            "drumsticks",
+            "ash gourd",
+            "pumpkin",
+            "carrots",
+            "okra",
+            "eggplant",
+            "shallots",
+            "tomato",
+            "tamarind"
+        ],
+        instructions: `Cook Dal: Pressure cook 1/2 cup toor dal until soft. Mash it.
+
 Roast Coconut: Fry 1 cup grated coconut with 2 tbsp coriander seeds and 5 red chilies in oil until golden brown. Blend into a smooth paste.
 
 Boil Veggies: Boil 2 cups vegetables with water, salt, and turmeric. Add 1/2 cup tamarind juice and boil for 4 minutes.
@@ -83,90 +111,65 @@ Boil Veggies: Boil 2 cups vegetables with water, salt, and turmeric. Add 1/2 cup
 Mix: Add the mashed dal and coconut paste to the veggies. Simmer for 5 minutes.
 
 Temper: Fry 1 tsp mustard seeds and curry leaves in 1 tbsp coconut oil. Pour over the sambar. Done!`
-            }, // <-- Fixed: Added missing comma here to bridge Sambar and Avial
-            { 
-                title: "Kerala Style Nadan Avial",
-                ingredients: ["carrot", "raw banana", "plantain", "drumstick", "ash gourd", "pumpkin", "cucumber"], // <-- Fixed: Divided ingredients cleanly
-                instructions: `Boil Veggies: Cook 2 cups of long-cut mixed vegetables with 1 tsp turmeric, salt, and water until tender.
+    },
+    {
+        title: "Kerala Style Nadan Avial",
+        ingredients: [
+            "carrot",
+            "raw banana",
+            "plantain",
+            "drumstick",
+            "ash gourd",
+            "pumpkin",
+            "cucumber"
+        ],
+        instructions: `Boil Veggies: Cook 2 cups of long-cut mixed vegetables with 1 tsp turmeric, salt, and water until tender.
 
 Blend Coconut: Coarsely grind 1 cup coconut, 1 tsp cumin, and 2-3 green chilies with very little water.
 
 Mix: Add the coconut paste to the cooked veggies. Simmer for 2 minutes.
 
-Finish: Turn off heat. Stir in 1/2 cup beaten yogurt. Top with 2 tbsp coconut oil and fresh curry leaves. Cover for 5 minutes, then serve!` // <-- Fixed: Swapped to backticks for multi-line support
-            }
-            
-     {
-    title: "soya chunks fry!!",
-    ingredients: [
-        "Soya chunks: 1 cup",
-        "Water: 3-4 cups (for boiling)",
-        "Salt: ½ tsp",
-        "Oil: 2 tbsp",
-        "Mustard seeds: ½ tsp",
-        "Cumin seeds (jeera): ½ tsp",
-        "Curry leaves: 1 sprig",
-        "Onion: 1 medium (finely chopped)",
-        "Ginger-garlic paste: 1 tsp",
-        "Green chili: 1 (slit length-wise)",
-        "Turmeric powder: ¼ tsp",
-        "Red chili powder: 1 tsp (adjust to taste)",
-        "Garam masala: ½ tsp",
-        "Coriander powder: 1 tsp",
-        "Salt: to taste",
-        "Lemon juice: 1 tsp (optional, for a tangy kick)",
-        "Fresh coriander leaves: chopped, for garnish"
-    
-    instructions: `Boil & Squeeze: Boil chunks for 5 mins, rinse with cold water, and squeeze out all water.
-
-Fry cumin seeds, 1 chopped onion, and 1 tsp ginger-garlic paste in 2 tbsp oil.
-
-Stir in turmeric, chili powder, coriander powder, and salt.
-
-Toss in the chunks and fry for 5 mins until crispy.
-
-Top with garam masala.`
-}
+Finish: Turn off heat. Stir in 1/2 cup beaten yogurt. Top with 2 tbsp coconut oil and fresh curry leaves. Cover for 5 minutes, then serve!`
+    },
+    {
+        title: "Soya Chunks Fry",
+        ingredients: [
+            "soya chunks",
+            "water",
+            "salt",
+            "oil",
+            "mustard seeds",
+            "cumin seeds",
+            "curry leaves",
+            "onion",
+            "ginger garlic paste",
+            "green chili",
+            "turmeric powder",
+            "red chili powder",
+            "garam masala",
+            "coriander powder",
+            "lemon juice",
+            "coriander leaves"
         ],
-        
+        instructions: `Boil and squeeze the soya chunks.
 
-        function searchRecipes() {
-            const userInput = document.getElementById("ingredientInput").value.toLowerCase();
-            const resultsDiv = document.getElementById("results");
-            
-            resultsDiv.innerHTML = "";
+Heat oil and add mustard seeds, cumin seeds, and curry leaves.
 
-            if (!userInput) {
-                resultsDiv.innerHTML = "<p>Please type at least one ingredient!</p>";
-                return;
-            }
+Add onion and saute until golden.
 
-            // Clean up white spaces from inputs
-            const userIngredients = userInput.split(',').map(item => item.trim());
+Add ginger garlic paste and green chili.
 
-            // Match ingredients
-            const matchedRecipes = mockDatabase.filter(recipe => {
-                return userIngredients.some(ingredient => recipe.ingredients.includes(ingredient));
-            });
+Add turmeric, chili powder, coriander powder, and salt.
 
-            if (matchedRecipes.length === 0) {
-                resultsDiv.innerHTML = "<p>No recipes found with those ingredients. Try 'egg', 'cheese', or 'pumpkin'!</p>";
-                return;
-            }
+Add soya chunks and fry for 5 minutes.
 
-            // Render matching recipes onto page
-            matchedRecipes.forEach(recipe => {
-                const card = document.createElement("div");
-                card.className = "recipe-card";
-                card.innerHTML = `
-                    <h3>${recipe.title}</h3>
-                    <p><strong>Uses:</strong> ${recipe.ingredients.join(", ")}</p>
-                    <p><strong>How to make:</strong><br>${recipe.instructions.replace(/\n/g, '<br>')}</p>
-                `;
-                resultsDiv.appendChild(card);
-            });
-        }
+Sprinkle garam masala and lemon juice.
+
+Garnish with coriander leaves and serve.`
+    }
+];
     </script>
+        // MOCK DATABASE: Cleaned up, comma-separated, and lowercased for flawless matching
 <table border="5" align="center" bgcolor="#black" cellpadding="10">
     <tr>
         <td>
